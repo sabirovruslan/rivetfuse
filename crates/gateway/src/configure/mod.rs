@@ -3,11 +3,16 @@ use std::str::FromStr;
 use config::{ConfigError, Environment};
 use serde::Deserialize;
 
+use crate::configure::server::ServerConfig;
+
 pub mod env;
+pub mod server;
 pub mod tracing;
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct AppConfig {}
+pub struct AppConfig {
+    pub server: ServerConfig,
+}
 
 impl AppConfig {
     pub fn init(env_src: Environment) -> Result<Self, ConfigError> {
