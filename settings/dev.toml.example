@@ -1,0 +1,10 @@
+profile = "dev"
+
+[db]
+host = "127.0.0.1"
+port = 5_432
+username = "username"
+password = "password"
+database_name = "database_name"
+max_connections = 10
+min_connections = 5

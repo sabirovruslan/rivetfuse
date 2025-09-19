@@ -11,3 +11,9 @@ tracing-subscriber = { workspace = true }
 tracing-bunyan-formatter = { workspace = true }
 tracing-log = { workspace = true }
 dotenv = { workspace = true }
+serde = { workspace = true }
+config = { workspace = true }
+strum = { workspace = true }
+
+# local crates 
+common = { path = "../common"}

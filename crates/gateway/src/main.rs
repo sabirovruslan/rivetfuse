@@ -1,6 +1,7 @@
 use tracing::info;
 
 pub(crate) mod configure;
+pub(crate) mod constant;
 
 #[tokio::main]
 async fn main() {
