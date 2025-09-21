@@ -37,3 +37,7 @@ Cargo.lock
 
 # Node and other build files
 /volumes/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
