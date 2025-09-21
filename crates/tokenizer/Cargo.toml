@@ -1,0 +1,12 @@
+[package]
+name = "tokenizer"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+tokio = { workspace = true }
+tiktoken-rs = "0.7.0"
+tokenizers = "0.22.1"
+dashmap = "7.0.0-rc2"
+

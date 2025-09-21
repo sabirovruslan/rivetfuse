@@ -2,6 +2,7 @@
 members = [
   "crates/gateway",
   "crates/common",
+  "crates/tokenizer",
 ]
 resolver = "2"
 
