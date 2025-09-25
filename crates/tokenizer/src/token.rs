@@ -59,9 +59,12 @@ fn tokenizer_path(tk_id: &str) -> Result<PathBuf> {
 mod test {
     use std::env;
 
+    use serial_test::serial;
+    use std::sync::Arc as StdArc;
     use tempfile::TempDir;
     use tokenizers::models::bpe::Vocab;
     use tokenizers::models::wordlevel::WordLevelBuilder;
+    use tokenizers::pre_tokenizers::whitespace::Whitespace;
     use tokenizers::AddedToken;
 
     use super::*;
@@ -69,9 +72,9 @@ mod test {
     fn write_test_wordlevel_tokenizer(dir: &PathBuf, filename: &str) {
         let vocab: Vocab = [
             ("<unk>".into(), 0),
-            ("rld".into(), 1),
+            ("new".into(), 1),
             ("hello".into(), 2),
-            ("new".into(), 3),
+            ("lll".into(), 3),
         ]
         .iter()
         .cloned()
@@ -84,6 +87,7 @@ mod test {
             .unwrap();
 
         let mut tokenizer = Tokenizer::new(model);
+        tokenizer.with_pre_tokenizer(Some(Whitespace::default()));
         tokenizer.add_special_tokens(&[AddedToken::from("<unk>", true)]);
         let out_path = dir.join(filename);
         tokenizer
@@ -99,6 +103,7 @@ mod test {
     }
 
     #[test]
+    #[serial]
     fn hf_tokenizer_counts_tokens() {
         let tmp_tk_dir = TempDir::new().expect("tmp tokenizers dir");
         let dir_path = tmp_tk_dir.path().to_path_buf();
@@ -108,9 +113,35 @@ mod test {
         unsafe {
             env::set_var("TOKENIZER_DIR", &dir_path);
         }
-        let count = count_text_tokens("mistral-7b-instruct", "world test new hello")
+        let count = count_text_tokens("mistral-7b-instruct", "new hello testhelllo")
             .expect("should tokenize with hf tokenizer");
-        assert_eq!(count, 2);
+        assert_eq!(count, 3);
+
+        unsafe {
+            env::remove_var("TOKENIZER_DIR");
+        }
+    }
+
+    #[test]
+    #[serial]
+    fn get_or_load_tokenizer_uses_cache() {
+        let tmp_dir = TempDir::new().expect("tmp dir");
+        let dir_path = tmp_dir.path().to_path_buf();
+        let tk_file = "yi.tokenizers.json";
+        write_test_wordlevel_tokenizer(&dir_path, tk_file);
+
+        unsafe {
+            env::set_var("TOKENIZER_DIR", &dir_path);
+        }
+
+        let a = get_or_load_tokenizer("yi").expect("load first");
+        let b = get_or_load_tokenizer("yi").expect("load cache");
+
+        assert!(StdArc::ptr_eq(&a, &b));
+
+        unsafe {
+            env::remove_var("TOKENIZER_DIR");
+        }
     }
 
     #[test]
