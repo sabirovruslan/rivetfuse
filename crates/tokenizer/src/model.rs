@@ -1,5 +1,7 @@
 use std::{collections::HashMap, sync::LazyLock};
 
+use tiktoken_rs::tokenizer::get_tokenizer;
+
 static HF_MODEL_MAP: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     let mut hf_map = HashMap::new();
 
@@ -23,12 +25,7 @@ pub enum ModelFamily {
 pub fn resolve_model_family(model: &str) -> ModelFamily {
     let m = model.to_ascii_lowercase();
 
-    if m.starts_with("gpt-")
-        || m.starts_with("o")
-        || m.starts_with("llama-3")
-        || m.starts_with("meta-llama-3")
-        || m.contains("gpt-4")
-    {
+    if get_tokenizer(&m).is_some() {
         return ModelFamily::OpenAI;
     }
 
@@ -58,17 +55,19 @@ mod tests {
 
     #[test]
     fn openai_models() {
-        assert_eq!(resolve_model_family("gpt-5"), ModelFamily::OpenAI);
-        assert_eq!(resolve_model_family("gpt-realtime"), ModelFamily::OpenAI);
-        assert_eq!(resolve_model_family("gpt-4o-mini"), ModelFamily::OpenAI);
-        assert_eq!(
-            resolve_model_family("chatgpt-4o-latest"),
-            ModelFamily::OpenAI
-        );
-        assert_eq!(
-            resolve_model_family("o3-deep-research"),
-            ModelFamily::OpenAI
-        );
+        let cases = [
+            "o1",
+            "o3",
+            "chatgpt-4o-latest",
+            "gpt-35-turbo",
+            "gpt-4",
+            "babbage-002",
+            "text-embedding-3-small",
+        ];
+
+        for model in cases {
+            assert_eq!(resolve_model_family(model), ModelFamily::OpenAI);
+        }
     }
 
     #[test]
