@@ -127,7 +127,7 @@ mod test {
     fn get_or_load_tokenizer_uses_cache() {
         let tmp_dir = TempDir::new().expect("tmp dir");
         let dir_path = tmp_dir.path().to_path_buf();
-        let tk_file = "yi.tokenizers.json";
+        let tk_file = "yi.tokenizer.json";
         write_test_wordlevel_tokenizer(&dir_path, tk_file);
 
         unsafe {
