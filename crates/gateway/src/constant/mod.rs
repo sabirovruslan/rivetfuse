@@ -1,6 +1,7 @@
 use std::sync::LazyLock;
 
-use crate::configure::{AppConfig, env::get_env_source};
+use crate::configure::AppConfig;
+use crate::configure::env::get_env_source;
 
 pub const ENV_PREFIX: &str = "APP";
 

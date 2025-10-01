@@ -1,7 +1,11 @@
-use tracing::{Subscriber, subscriber::set_global_default};
-use tracing_bunyan_formatter::{BunyanFormattingLayer, JsonStorageLayer};
+use tracing::Subscriber;
+use tracing::subscriber::set_global_default;
+use tracing_bunyan_formatter::BunyanFormattingLayer;
+use tracing_bunyan_formatter::JsonStorageLayer;
 use tracing_log::LogTracer;
-use tracing_subscriber::{EnvFilter, Registry, layer::SubscriberExt};
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::Registry;
+use tracing_subscriber::layer::SubscriberExt;
 
 fn create_subscriber(name: &str, env_fileter: EnvFilter) -> impl Subscriber + Sync + Send {
     Registry::default()

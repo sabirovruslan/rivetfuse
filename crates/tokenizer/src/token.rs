@@ -1,15 +1,17 @@
-use std::{
-    fs,
-    path::PathBuf,
-    sync::{Arc, LazyLock},
-};
+use std::fs;
+use std::path::PathBuf;
+use std::sync::Arc;
+use std::sync::LazyLock;
 
-use anyhow::{anyhow, Context, Result};
+use anyhow::Context;
+use anyhow::Result;
+use anyhow::anyhow;
 use dashmap::DashMap;
 use tiktoken_rs::get_bpe_from_model;
 use tokenizers::Tokenizer;
 
-use crate::model::{resolve_model_family, ModelFamily};
+use crate::model::ModelFamily;
+use crate::model::resolve_model_family;
 
 static TOKENIZER_CACHE: LazyLock<DashMap<String, Arc<Tokenizer>>> =
     LazyLock::new(|| DashMap::new());
@@ -62,10 +64,10 @@ mod test {
     use serial_test::serial;
     use std::sync::Arc as StdArc;
     use tempfile::TempDir;
+    use tokenizers::AddedToken;
     use tokenizers::models::bpe::Vocab;
     use tokenizers::models::wordlevel::WordLevelBuilder;
     use tokenizers::pre_tokenizers::whitespace::Whitespace;
-    use tokenizers::AddedToken;
 
     use super::*;
 

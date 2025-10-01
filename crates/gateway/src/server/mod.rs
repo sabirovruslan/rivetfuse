@@ -1,9 +1,10 @@
 use tokio::net::TcpListener;
 use tracing::info;
 
-use crate::{
-    configure::AppConfig, error::AppResult, router::create_router, server::state::AppState,
-};
+use crate::configure::AppConfig;
+use crate::error::AppResult;
+use crate::router::create_router;
+use crate::server::state::AppState;
 
 pub mod di;
 pub mod state;

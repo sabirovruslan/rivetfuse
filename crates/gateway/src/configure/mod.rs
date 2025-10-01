@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
-use config::{ConfigError, Environment};
+use config::ConfigError;
+use config::Environment;
 use serde::Deserialize;
 
 use crate::configure::server::ServerConfig;

@@ -1,6 +1,8 @@
-use axum::{Router, routing::get};
+use axum::Router;
+use axum::routing::get;
 
-use crate::{configure::AppConfig, server::state::AppState};
+use crate::configure::AppConfig;
+use crate::server::state::AppState;
 
 pub fn create_router(state: AppState) -> Router {
     let router = Router::new();

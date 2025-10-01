@@ -1,6 +1,8 @@
 use std::sync::Arc;
 
-use crate::{configure::AppConfig, error::AppResult, server::di::Container};
+use crate::configure::AppConfig;
+use crate::error::AppResult;
+use crate::server::di::Container;
 
 #[derive(Clone)]
 pub struct AppState {
